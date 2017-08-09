@@ -84,7 +84,8 @@ action :restart do
 end
 
 def enable_service
-  e = execute "supervisorctl update" do
+  e = execute "supervisorctl update #{new_resource.service_name}" do
+    command 'supervisorctl update'
     action :nothing
     user "root"
   end
@@ -96,7 +97,7 @@ def enable_service
     group "root"
     mode "644"
     variables :prog => new_resource
-    notifies :run, "execute[supervisorctl update]", :immediately
+    notifies :run, "execute[supervisorctl update #{new_resource.service_name}]", :immediately
   end
 
   t.run_action(:create)
@@ -106,14 +107,14 @@ def enable_service
 end
 
 def disable_service
-  execute "supervisorctl update" do
+  execute "supervisorctl update #{new_resource.service_name}" do
     action :nothing
     user "root"
   end
 
   file "#{node['supervisor']['dir']}/#{new_resource.service_name}.conf" do
     action :delete
-    notifies :run, "execute[supervisorctl update]", :immediately
+    notifies :run, "execute[supervisorctl update #{new_resource.service_name}]", :immediately
   end
 end
 
