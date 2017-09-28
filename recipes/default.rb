@@ -17,7 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe "python"
+python_runtime 'supervisor' do
+  version '2'
+end
 
 # foodcritic FC023: we prefer not having the resource on non-smartos
 if platform_family?("smartos")
@@ -26,10 +28,12 @@ if platform_family?("smartos")
   end
 end
 
-python_pip "supervisor" do
+python_package 'supervisor' do
   action :upgrade
+  python 'supervisor'
   version node['supervisor']['version'] if node['supervisor']['version']
 end
+
 
 directory node['supervisor']['dir'] do
   owner "root"
@@ -85,7 +89,7 @@ when "amazon", "centos", "debian", "fedora", "redhat", "ubuntu", "raspbian"
     variables({
       # TODO: use this variable in the debian platform-family template
       # instead of altering the PATH and calling "which supervisord".
-      :supervisord => "#{node['python']['prefix_dir']}/bin/supervisord"
+      :supervisord => "/usr/local/bin/supervisord"
     })
   end
 
