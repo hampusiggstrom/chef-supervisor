@@ -19,7 +19,6 @@
 
 python_runtime 'supervisor' do
   version '2'
-  pip_version '18.0'
 end
 
 # foodcritic FC023: we prefer not having the resource on non-smartos
