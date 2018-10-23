@@ -19,7 +19,6 @@
 
 python_runtime 'supervisor' do
   version '2'
-  get_pip_url 'https://github.com/pypa/get-pip/raw/f88ab195ecdf2f0001ed21443e247fb32265cabb/get-pip.py'
   pip_version '18.0'
 end
 
